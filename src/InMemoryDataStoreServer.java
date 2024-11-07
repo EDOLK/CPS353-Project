@@ -10,8 +10,8 @@ import io.grpc.stub.StreamObserver;
 
 public class InMemoryDataStoreServer extends DataStoreSystemImplBase {
 
-	private final static List<Integer> inMemoryInputList = new ArrayList<>();
-	private final static List<Integer> inMemoryOutputList = new ArrayList<>();
+	private final List<Integer> inMemoryInputList = new ArrayList<>();
+	private final List<Integer> inMemoryOutputList = new ArrayList<>();
 
 	public void readInput(InputRequest request, StreamObserver<InputResponse> responseObserver) {
 		InputResponse.Builder responseBuilder = InputResponse.newBuilder();
