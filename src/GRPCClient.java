@@ -38,6 +38,9 @@ public class GRPCClient{
             System.out.println("");
             System.out.print("calculation successful, output = ");
             response.getOutputList().forEach(o -> {System.out.print(o + ", ");});
+            System.out.println("Written at: " + args[2]);
+        } else {
+            System.out.println("Failed!");
         }
         channel.shutdown();
 
