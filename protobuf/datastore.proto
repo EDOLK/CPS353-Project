@@ -1,0 +1,23 @@
+package datastore;
+
+message InputRequest{
+	optional string fileName = 1;
+}
+
+message InputResponse{
+	repeated int32 inputList = 1;
+}
+
+message OutputRequest{
+	optional string fileName = 1;
+	repeated int32 outputList = 2;
+}
+
+message OutputResponse{
+	optional bool outputWritten = 1;
+}
+
+service DataStoreSystem{
+	rpc  ReadInput(InputRequest) returns (InputResponse);
+	rpc  WriteOutput(OutputRequest) returns (OutputResponse);
+}
