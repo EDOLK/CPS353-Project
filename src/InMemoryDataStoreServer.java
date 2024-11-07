@@ -36,7 +36,7 @@ public class InMemoryDataStoreServer extends DataStoreSystemImplBase {
 		return new ArrayList<>(inMemoryInputList);
 	}
 
-	public static List<Integer> getInMemoryOutputList() {
+	public List<Integer> getInMemoryOutputList() {
 		return new ArrayList<>(inMemoryOutputList);
 	}
 
