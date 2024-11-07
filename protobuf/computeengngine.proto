@@ -1,0 +1,22 @@
+package computeengine;
+
+message computeRequest{
+    repeated int32 input = 1;
+    optional string inputPath = 2;
+    optional string outputPath = 3;
+}
+
+message computeResponse{
+    optional responseCode code = 1;
+    repeated int32 output = 2;
+
+    enum responseCode{
+        SUCCESSFUL = 1;
+        FAILED = 2;
+    }
+
+}
+
+service ComputeEngineService{
+    rpc compute(computeRequest) returns (computeResponse);
+}

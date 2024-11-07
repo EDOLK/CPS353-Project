@@ -14,6 +14,7 @@ public class ComputeServer {
 
     server = Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create())
             //.addService(new -)
+            .addService(new GRPCMediator())
             .addService(ProtoReflectionService.newInstance())
             .build()
             .start();
@@ -40,4 +41,5 @@ public class ComputeServer {
       server.awaitTermination();
     }
   }
+
 }

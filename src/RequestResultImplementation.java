@@ -30,7 +30,7 @@ public class RequestResultImplementation implements RequestResult {
 	if(resultNumStream == null) {
 		throw new IllegalArgumentException("NumStream cannot be null");
 	}
-   	this.result = result;
+    this.result = resultNumStream;
   }
 
   public void setResultString(String resultString) {
