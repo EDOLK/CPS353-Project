@@ -27,10 +27,12 @@ public class DataStoreServerImpl extends DataStoreSystemImplBase {
 			reader = new BufferedReader(new FileReader(fileName));
 			String line;
 			while((line = reader.readLine()) != null) {
-				try{
-					inputList.add(Integer.parseInt(line.trim()));			
-				}catch(NumberFormatException e){
-					e.printStackTrace();
+				for (String str : line.split(",")) {
+					try{
+						inputList.add(Integer.parseInt(str.trim()));			
+					}catch(NumberFormatException e){
+						e.printStackTrace();
+					}
 				}
 			}
 		}catch(FileNotFoundException e) {
@@ -55,13 +57,12 @@ public class DataStoreServerImpl extends DataStoreSystemImplBase {
 		String fileName = request.getFileName();
 		OutputResponse.Builder responseBuilder = OutputResponse.newBuilder();
 
-		List<Integer> outputList = new ArrayList<>();
 		boolean outputWritten = false;
 
 		BufferedWriter writer = null;
 		try{
 			writer = new BufferedWriter(new FileWriter(fileName));
-			for(int output : outputList) {
+			for(int output : request.getOutputListList()) {
 				writer.write(String.valueOf(output));
 				writer.newLine();
 			}

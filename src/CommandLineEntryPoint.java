@@ -8,10 +8,6 @@ public class CommandLineEntryPoint implements UserRequestProvider<String[]>{
 	}
 
 	public static void main(String[] args) throws Exception {
-		ComputeServer computeServer = new ComputeServer();
-		computeServer.start();
-		computeServer.blockUntilShutdown();
-
 		if (args[0].equals("--help")) {
 			System.out.println("Command line entry point for factorial digit sum program. Takes filename for input and filename to output.");
 			System.out.println("Ex: CommandLineEntryPoint inputfilename.txt outputfile.txt");
