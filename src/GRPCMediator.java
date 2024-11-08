@@ -58,11 +58,11 @@ public class GRPCMediator extends ComputeEngineServiceImplBase{
         if (!responseCode.isFailure()){
 
             RequestResult r = response.getRequestResult();
-            if (r instanceof RequestResultImplementation rImp){
+            if (r instanceof RequestResultImplementation requestResultImplementation){
 
                 OutputRequest.Builder outputRequestBuilder = OutputRequest.newBuilder();
 
-                outputRequestBuilder.addAllOutputList(rImp.getResultNumStream().getIntegers());
+                outputRequestBuilder.addAllOutputList(requestResultImplementation.getResultNumStream().getIntegers());
 
                 outputRequestBuilder.setFileName(request.getOutputPath());
 
