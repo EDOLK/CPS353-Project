@@ -1,6 +1,7 @@
-import interfaces.NumStream;
-
 import java.util.ArrayList;
+import java.util.List;
+
+import interfaces.NumStream;
 
 public class ComputationImplementation implements ComputeEngineComputation {
   @Override
@@ -10,12 +11,12 @@ public class ComputationImplementation implements ComputeEngineComputation {
     }
     ArrayList<Integer> resultList = new ArrayList<>();
 
-    factorialLoop((ArrayList<Integer>) numStream.getIntegers(), resultList);
+    factorialLoop(numStream.getIntegers(), resultList);
 
     return new EngineResponseImplementation(ResponseCode.SUCCESSFUL, resultList);
   }
 
-  public void factorialLoop(ArrayList<Integer> inputList, ArrayList<Integer> resultList) {
+  public void factorialLoop(List<Integer> inputList, ArrayList<Integer> resultList) {
   	if(inputList == null || inputList.isEmpty()) {
 		throw new IllegalArgumentException("Input list cannot be null or empty");
 	}

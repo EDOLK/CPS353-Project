@@ -42,4 +42,10 @@ public class ComputeServer {
     }
   }
 
+    public static void main(String[] args) throws Exception {
+        ComputeServer server = new ComputeServer();
+        server.start();
+        server.blockUntilShutdown();
+    }
+
 }

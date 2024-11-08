@@ -36,11 +36,11 @@ public class GRPCClient{
 
         if (response.getCode() == computeResponse.responseCode.SUCCESSFUL){
             System.out.println("");
-            System.out.print("calculation successful, output = ");
-            response.getOutputList().forEach(o -> {System.out.print(o + ", ");});
-            System.out.println("Written at: " + args[2]);
+            System.out.println("Calculation successful.");
+            System.out.println("Output written at: " + args[2]);
         } else {
             System.out.println("Failed!");
+            System.out.println(response);
         }
         channel.shutdown();
 

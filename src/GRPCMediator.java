@@ -48,8 +48,8 @@ public class GRPCMediator extends ComputeEngineServiceImplBase{
         }
         requestStream = new NumStreamImplementation(inputList);
         UserRequest userRequest = new UserRequest(
-            new FileUserRequestSource(request.getInputPath()),
-            new FileUserRequestDestination(request.getOutputPath()),
+            new FileUserRequestSource("N/A"),
+            new FileUserRequestDestination("N/A"),
             requestStream
         );
         EngineResponse response = engine.submitRequest(userRequest);
@@ -75,6 +75,9 @@ public class GRPCMediator extends ComputeEngineServiceImplBase{
 
         } else {
             computeResponseBuilder.setCode(computeResponse.responseCode.FAILED);
+            if (response instanceof EngineResponseException ex) {
+            	ex.getException().printStackTrace();
+            }
         }
         responseObserver.onNext(computeResponseBuilder.build());
         responseObserver.onCompleted();

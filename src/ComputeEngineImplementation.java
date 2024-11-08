@@ -81,7 +81,7 @@ public class ComputeEngineImplementation implements ComputeEngine {
 	if(userRequest == null){
 		throw new IllegalArgumentException("UserRequest cannot be null");
 	}
-    ArrayList<Integer> requestStream = (ArrayList<Integer>) userRequest.getRequestStream().getIntegers();
+    List<Integer> requestStream = userRequest.getRequestStream().getIntegers();
     StringBuilder result = new StringBuilder();
     int resultPosition = 0;
 
