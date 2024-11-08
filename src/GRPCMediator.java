@@ -40,6 +40,7 @@ public class GRPCMediator extends ComputeEngineServiceImplBase{
                 InputResponse inputResponse = dataStoreServerStub.readInput(inputRequestBuilder.build());
                 inputList = inputResponse.getInputListList();
             } else {
+                channel.shutdown();
                 computeResponseBuilder.setCode(computeResponse.responseCode.FAILED);
                 responseObserver.onNext(computeResponseBuilder.build());
                 responseObserver.onCompleted();
@@ -79,6 +80,7 @@ public class GRPCMediator extends ComputeEngineServiceImplBase{
             	ex.getException().printStackTrace();
             }
         }
+        channel.shutdown();
         responseObserver.onNext(computeResponseBuilder.build());
         responseObserver.onCompleted();
     }
