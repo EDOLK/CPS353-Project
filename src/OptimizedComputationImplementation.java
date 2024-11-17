@@ -168,11 +168,15 @@ public class OptimizedComputationImplementation implements ComputeEngineComputat
             try {
                 Entry<Integer, Integer> floor = previousResults.floorEntry(key);
                 Entry<Integer, Integer> ceil = previousResults.ceilingEntry(key);
+                Entry<Integer, Integer> pref = null;
                 if (floor != null && ceil != null){
-                    return Math.abs(floor.getKey() - key) < Math.abs(ceil.getKey() - key) ? floor : ceil;
+                    pref = Math.abs(floor.getKey() - key) < Math.abs(ceil.getKey() - key) ? floor : ceil;
+                } else if (floor == null && ceil == null){
+                	return null;
                 } else {
-                    return floor != null ? floor : ceil;
+                    pref = floor != null ? floor : ceil;
                 }
+                return Math.abs(pref.getKey() - key) < key ? pref : null;
             } finally {
                 readLock.unlock();
             }
