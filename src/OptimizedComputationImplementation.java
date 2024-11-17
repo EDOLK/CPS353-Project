@@ -117,8 +117,14 @@ class FactorialTask implements Callable<FactorialResult>{
                 result = closestPair.getValue();
             } else {
                 result = closestPair.getValue();
-                for (int i = closestPair.getKey()+1; i <= input ; i++) {
-                    result *= i;
+                if (closestPair.getKey() < input){
+                    for (int i = closestPair.getKey()+1; i <= input ; i++) {
+                        result *= i;
+                    }
+                } else {
+                    for (int i = closestPair.getKey(); i > input ; i--) {
+                        result /= i;
+                    }
                 }
             }
         } else {
@@ -132,7 +138,7 @@ class FactorialTask implements Callable<FactorialResult>{
 
         int resultSum = 0;
 
-        while (result != 0 ) {
+        while (result != 0) {
         	resultSum += result % 10;
         	result /= 10;
         }
@@ -161,7 +167,13 @@ class ResultTree {
     public Entry<Integer, Integer> getClosest(int key){
         readLock.lock();
         try {
-            return previousResults.floorEntry(key);
+            Entry<Integer, Integer> floor = previousResults.floorEntry(key);
+            Entry<Integer, Integer> ceil = previousResults.ceilingEntry(key);
+            if (floor != null && ceil != null){
+                return Math.abs(floor.getKey() - key) < Math.abs(ceil.getKey() - key) ? floor : ceil;
+            } else {
+                return floor != null ? floor : ceil;
+            }
         } finally {
             readLock.unlock();
         }
