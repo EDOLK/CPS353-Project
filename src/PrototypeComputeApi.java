@@ -7,7 +7,7 @@ public class PrototypeComputeApi {
     NumStream computeEngineInput = computeRequestHandler.getUserRequest().getRequestStream();
 
     // Send the ints over to the engine for computation
-    EngineResponse computeResult = computeEngine.doFactorial(computeEngineInput);
+    EngineResponse computeResult = computeEngine.doFactorialSum(computeEngineInput);
 
     // Generate a response string and pass it along
     computeRequestHandler.generateAndSendResponseMessage(computeResult.getRequestResult().getResultNumStream());
