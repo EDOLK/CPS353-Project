@@ -74,7 +74,7 @@ public class ComputeEngineImplementation implements ComputeEngine {
 	if(numStream == null) {
 		throw new IllegalArgumentException("NumStream cannot be null");
 	}
-    return computeEngineComputation.doFactorial(numStream);
+    return computeEngineComputation.doFactorialSum(numStream);
   }
 
   public String processResultString(UserRequest userRequest, ArrayList<Integer> resultList) {
