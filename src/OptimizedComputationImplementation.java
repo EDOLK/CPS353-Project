@@ -58,134 +58,134 @@ public class OptimizedComputationImplementation implements ComputeEngineComputat
         }
     }
     
-}
-class FactorialResult{
-    private int order;
-    private int input;
-    private int result;
-    public FactorialResult(int order, int inputNum, int result) {
-        this.order = order;
-        this.input = inputNum;
-        this.result = result;
-    }
-    public int getOrder() {
-        return order;
-    }
-    public void setOrder(int order) {
-        this.order = order;
-    }
-    public int getInput() {
-        return input;
-    }
-    public void setInput(int inputNum) {
-        this.input = inputNum;
-    }
-    public int getResult() {
-        return result;
-    }
-    public void setResult(int result) {
-        this.result = result;
-    }
-
-
-}
-
-class FactorialTask implements Callable<FactorialResult>{
-
-    private int order;
-    private int input;
-    private ResultTree resultTree;
-
-    public FactorialTask(int order, int input, ResultTree tree){
-        this.order = order;
-        this.input = input;
-        this.resultTree = tree;
-    }
-
-    @Override
-    public FactorialResult call() throws Exception {
-        if(input < 0) {
-            throw new IllegalArgumentException("Cannot compute the factorial of " + input);
+    private class FactorialResult{
+        private int order;
+        private int input;
+        private int result;
+        public FactorialResult(int order, int inputNum, int result) {
+            this.order = order;
+            this.input = inputNum;
+            this.result = result;
+        }
+        public int getOrder() {
+            return order;
+        }
+        public void setOrder(int order) {
+            this.order = order;
+        }
+        public int getInput() {
+            return input;
+        }
+        public void setInput(int inputNum) {
+            this.input = inputNum;
+        }
+        public int getResult() {
+            return result;
+        }
+        public void setResult(int result) {
+            this.result = result;
         }
 
-        int result = 1;
 
-        Entry<Integer, Integer> closestPair = resultTree.getClosest(input);
+    }
 
-        if (closestPair != null){
-            if (closestPair.getKey() == input){
-                result = closestPair.getValue();
-            } else {
-                result = closestPair.getValue();
-                if (closestPair.getKey() < input){
-                    for (int i = closestPair.getKey()+1; i <= input ; i++) {
-                        result *= i;
-                    }
+    private class FactorialTask implements Callable<FactorialResult>{
+
+        private int order;
+        private int input;
+        private ResultTree resultTree;
+
+        public FactorialTask(int order, int input, ResultTree tree){
+            this.order = order;
+            this.input = input;
+            this.resultTree = tree;
+        }
+
+        @Override
+        public FactorialResult call() throws Exception {
+            if(input < 0) {
+                throw new IllegalArgumentException("Cannot compute the factorial of " + input);
+            }
+
+            int result = 1;
+
+            Entry<Integer, Integer> closestPair = resultTree.getClosest(input);
+
+            if (closestPair != null){
+                if (closestPair.getKey() == input){
+                    result = closestPair.getValue();
                 } else {
-                    for (int i = closestPair.getKey(); i > input ; i--) {
-                        result /= i;
+                    result = closestPair.getValue();
+                    if (closestPair.getKey() < input){
+                        for (int i = closestPair.getKey()+1; i <= input ; i++) {
+                            result *= i;
+                        }
+                    } else {
+                        for (int i = closestPair.getKey(); i > input ; i--) {
+                            result /= i;
+                        }
                     }
                 }
-            }
-        } else {
-            for (int interval = input; interval > 0; interval--) {
-                result = result * interval;
-            }
-        }
-        if (!resultTree.contains(input)){
-            resultTree.add(input,result);
-        }
-
-        int resultSum = 0;
-
-        while (result != 0) {
-        	resultSum += result % 10;
-        	result /= 10;
-        }
-
-        return new FactorialResult(order, input, resultSum);
-    }
-
-}
-
-class ResultTree {
-
-    private TreeMap<Integer,Integer> previousResults = new TreeMap<>();
-    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private final Lock writeLock = readWriteLock.writeLock();
-    private final Lock readLock = readWriteLock.readLock();
-
-    public void add(int key, int value){
-        writeLock.lock();
-        try {
-            previousResults.put(key, value);
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    public Entry<Integer, Integer> getClosest(int key){
-        readLock.lock();
-        try {
-            Entry<Integer, Integer> floor = previousResults.floorEntry(key);
-            Entry<Integer, Integer> ceil = previousResults.ceilingEntry(key);
-            if (floor != null && ceil != null){
-                return Math.abs(floor.getKey() - key) < Math.abs(ceil.getKey() - key) ? floor : ceil;
             } else {
-                return floor != null ? floor : ceil;
+                for (int interval = input; interval > 0; interval--) {
+                    result = result * interval;
+                }
             }
-        } finally {
-            readLock.unlock();
+            if (!resultTree.contains(input)){
+                resultTree.add(input,result);
+            }
+
+            int resultSum = 0;
+
+            while (result != 0) {
+                resultSum += result % 10;
+                result /= 10;
+            }
+
+            return new FactorialResult(order, input, resultSum);
         }
+
     }
 
-    public boolean contains(int key){
-        readLock.lock();
-        try {
-            return previousResults.containsKey(key);
-        } finally {
-            readLock.unlock();
-        }
-    }
+    private class ResultTree {
 
+        private TreeMap<Integer,Integer> previousResults = new TreeMap<>();
+        private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+        private final Lock writeLock = readWriteLock.writeLock();
+        private final Lock readLock = readWriteLock.readLock();
+
+        public void add(int key, int value){
+            writeLock.lock();
+            try {
+                previousResults.put(key, value);
+            } finally {
+                writeLock.unlock();
+            }
+        }
+
+        public Entry<Integer, Integer> getClosest(int key){
+            readLock.lock();
+            try {
+                Entry<Integer, Integer> floor = previousResults.floorEntry(key);
+                Entry<Integer, Integer> ceil = previousResults.ceilingEntry(key);
+                if (floor != null && ceil != null){
+                    return Math.abs(floor.getKey() - key) < Math.abs(ceil.getKey() - key) ? floor : ceil;
+                } else {
+                    return floor != null ? floor : ceil;
+                }
+            } finally {
+                readLock.unlock();
+            }
+        }
+
+        public boolean contains(int key){
+            readLock.lock();
+            try {
+                return previousResults.containsKey(key);
+            } finally {
+                readLock.unlock();
+            }
+        }
+
+    }
 }
