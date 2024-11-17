@@ -7,10 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import interfaces.NumStream;
-import mainpack.ComputationImplementation;
-import mainpack.EngineResponse;
-import mainpack.RequestResult;
-import mainpack.ResponseCode;
 
 public class FactorialTest {
 
