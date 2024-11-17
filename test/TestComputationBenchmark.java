@@ -20,8 +20,8 @@ public class TestComputationBenchmark {
     ComputeRequestHandler computeRequestHandler = new ComputeRequestHandlerImplementation(userRequest);
     computeRequestHandler.setDataApi(dataStoreApi);
 
-    ComputeEngineComputation computationImplementationOld = new ComputationImplementation();
-    OptimizedComputationImplementation computationImplementationNew = new OptimizedComputationImplementation();
+    ConcurrentComputationImplementation computationImplementationOld = new ConcurrentComputationImplementation();
+    ComputationImplementation computationImplementationNew = new ComputationImplementation();
 
     ComputeEngine computeEngineImplementationOld = new ComputeEngineImplementation(computationImplementationOld, computeRequestHandler);
     ComputeEngine computeEngineImplementationNew = new ComputeEngineImplementation(computationImplementationNew, computeRequestHandler);
