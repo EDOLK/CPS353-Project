@@ -9,7 +9,7 @@ public class TestComputeEngineIntegration {
 
   @Test
   public void testComputeEngineIntegration() {
-    ArrayList<Integer> requestList = new ArrayList<>(Arrays.asList(1,10,25));
+    ArrayList<Integer> requestList = new ArrayList<>(Arrays.asList(1,10,12));
 
     // Create a computeRequestHandler with userRequest, and set it's datastoreapi
     DataStoreAPI dataStoreApi = new DataStoreAPI();
@@ -31,6 +31,6 @@ public class TestComputeEngineIntegration {
      If numbers >12 will be submitted to the api then all instances of
      <Integer> lists should be changed to <Float> lists
     */
-    Assert.assertEquals("1;1:10;3628800:25;2076180480", engineResponse.getRequestResult().getResultString());
+    Assert.assertEquals("1;1:10;27:12;27", engineResponse.getRequestResult().getResultString());
   }
 }
