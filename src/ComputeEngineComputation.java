@@ -1,5 +1,5 @@
 import interfaces.NumStream;
 
 public interface ComputeEngineComputation {
-  EngineResponse doFactorial(NumStream numStream);
+  EngineResponse doFactorialSum(NumStream numStream);
 }
