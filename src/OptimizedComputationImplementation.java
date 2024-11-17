@@ -49,7 +49,7 @@ public class OptimizedComputationImplementation implements ComputeEngineComputat
                 FactorialResult result = future.get();
                 resultArray[result.getOrder()] = result.getResult();
             } catch (Exception e) {
-                //TODO: handle exception
+                e.printStackTrace();
             }
         }
 
