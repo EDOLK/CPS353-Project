@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -13,7 +12,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import interfaces.NumStream;
 
-public class OptimizedComputationImplementation implements ComputeEngineComputation {
+public class ConcurrentComputationImplementation implements ComputeEngineComputation {
 
     private ResultTree resultTree = new ResultTree();
     private ExecutorService threadPool = Executors.newFixedThreadPool(10);
