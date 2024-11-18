@@ -1,0 +1,12 @@
+Elapsed time old: 5907800 nano seconds
+Elapsed time new: 76900 nano seconds
+
+Link to benchmark test: https://github.com/EDOLK/CPS353-Project/blob/main/test/TestComputationBenchmark.java
+
+The computation was first updated to properly compute a factorial sum. Before, 
+it was only computing a factorial, which was not the goal of the program. Then,
+a concurrent version of it was created that stored previously done computations
+in a treemap to make future computations faster. When the new version is ran after 
+the concurrent version, it is optimized, which is why the performance is significantly 
+improved. The pull request for the concurrent version can be found here: 
+https://github.com/EDOLK/CPS353-Project/pull/53
