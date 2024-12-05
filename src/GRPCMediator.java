@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import computeengine.ComputeEngineServiceGrpc.ComputeEngineServiceImplBase;
@@ -47,7 +49,22 @@ public class GRPCMediator extends ComputeEngineServiceImplBase{
                 return;
             }
         }
-        requestStream = new NumStreamImplementation(inputList);
+        boolean useBigIntegers = false;
+        for (Integer integer : inputList) {
+            if (integer > 12){
+                useBigIntegers = true;
+                break;
+            }
+        }
+        if (useBigIntegers){
+            List<BigInteger> bigIntInputList = new ArrayList<BigInteger>();
+            for (Integer integer : inputList) {
+                bigIntInputList.add(new BigInteger(String.valueOf(integer)));
+            }
+            requestStream = new BigIntegerNumStreamImplementation(bigIntInputList);
+        } else {
+            requestStream = new NumStreamImplementation(inputList);
+        }
         UserRequest userRequest = new UserRequest(
             new FileUserRequestSource("N/A"),
             new FileUserRequestDestination("N/A"),
@@ -62,7 +79,16 @@ public class GRPCMediator extends ComputeEngineServiceImplBase{
 
                 OutputRequest.Builder outputRequestBuilder = OutputRequest.newBuilder();
 
-                outputRequestBuilder.addAllOutputList(requestResultImplementation.getResultNumStream().getIntegers());
+                NumStream resultNumStream = requestResultImplementation.getResultNumStream();
+                if (resultNumStream instanceof BigIntegerNumStreamImplementation bigIntImp){
+                    List<Integer> resultList = new ArrayList<>();
+                    for (BigInteger bigInteger : bigIntImp.getBigIntegers()) {
+                        resultList.add(bigInteger.intValue());
+                    }
+                    outputRequestBuilder.addAllOutputList(resultList);
+                } else if (resultNumStream instanceof NumStreamImplementation intImp){
+                    outputRequestBuilder.addAllOutputList(intImp.getIntegers());
+                }
 
                 outputRequestBuilder.setFileName(request.getOutputPath());
 

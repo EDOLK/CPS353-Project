@@ -1,9 +1,14 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import datastoreapi.DataStoreAPI;
+import datastoreapi.DataStoreAPI.BigIntegerListWrapper;
+import datastoreapi.DataStoreAPI.IntegerListWrapper;
+import datastoreapi.DataStoreAPI.ListWrapper;
 import datastoreapi.InputRequest;
 import datastoreapi.OutputRequest;
+import interfaces.BigIntegerNumStream;
 import interfaces.NumStream;
 
 public class Mediator {
@@ -55,19 +60,23 @@ public class Mediator {
 
 		Optional<InputRequest> inRequest = generateInputRequest(userRequest);
 
-		NumStream inputNumStream = new NumStreamImplementation();
-
 		if (inRequest.isPresent()) {
-			List<Integer> inputList = dataStoreApi.readInput(inRequest.get());
-			inputNumStream.setIntegerList(inputList);
+            ListWrapper result = dataStoreApi.readInputMulti(inRequest.get());
+            if (result instanceof IntegerListWrapper integerListWrapper){
+                NumStream inputNumStream = new NumStreamImplementation(integerListWrapper.getIntegerList());
+                userRequest.setRequestStream(inputNumStream);
+            } else if (result instanceof BigIntegerListWrapper biListWrapper){
+                BigIntegerNumStream inputNumStream = new BigIntegerNumStreamImplementation(biListWrapper.getBigIntegerList());
+                userRequest.setRequestStream(inputNumStream);
+            }
 		}
 
-		userRequest.setRequestStream(inputNumStream);
-
 		EngineResponse engineResponse = computeEngine.submitRequest(userRequest);
+
 		if (!engineResponse.getResponseCode().isFailure()) {
 			Optional<OutputRequest> outRequest = generateOutputRequest(userRequest);
 			if (outRequest.isPresent()) {
+                OutputRequest outputRequest = outRequest.get();
 				dataStoreApi.setOutputList(List.of(engineResponse.getRequestResult().getResultString()));
 				dataStoreApi.writeOutput(outRequest.get());
 				response.setResponseCode(ResponseCode.SUCCESSFUL); 

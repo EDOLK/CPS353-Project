@@ -14,38 +14,16 @@ public class ComputationImplementation implements ComputeEngineComputation {
         if (numStream instanceof BigIntegerNumStream biNumStream){
             ArrayList<BigInteger> resultList = new ArrayList<>();
             factorialSumLoopForBigIntegers(biNumStream.getBigIntegers(), resultList);
-            NumStream resultStream = new BigIntegerNumStream() {
-
-                @Override
-                public List<Integer> getIntegers() {
-                    throw new UnsupportedOperationException("Unimplemented method 'getIntegers'");
-                }
-
-                @Override
-                public void setIntegerList(List<Integer> integerList) {
-                    throw new UnsupportedOperationException("Unimplemented method 'setIntegerList'");
-                }
-
-                @Override
-                public List<BigInteger> getBigIntegers() {
-                    return resultList;
-                }
-
-                @Override
-                public void setBigIntegerList(List<BigInteger> bigIntegerList) {
-                    throw new UnsupportedOperationException("Unimplemented method 'setBigIntegerList'");
-                }
-
-            };
+            NumStream resultStream = new BigIntegerNumStreamImplementation(resultList);
             RequestResultImplementation requestResult = new RequestResultImplementation();
             requestResult.setResultNumStream(resultStream);
             return new EngineResponseImplementation(ResponseCode.SUCCESSFUL, requestResult);
+        } else {
+            ArrayList<Integer> resultList = new ArrayList<>();
+            factorialSumLoop(numStream.getIntegers(), resultList);
+            return new EngineResponseImplementation(ResponseCode.SUCCESSFUL, resultList);
         }
-		ArrayList<Integer> resultList = new ArrayList<>();
 
-		factorialSumLoop(numStream.getIntegers(), resultList);
-
-		return new EngineResponseImplementation(ResponseCode.SUCCESSFUL, resultList);
 	}
 
 	public void factorialSumLoop(List<Integer> inputList, ArrayList<Integer> resultList) {
@@ -95,7 +73,7 @@ public class ComputationImplementation implements ComputeEngineComputation {
 			//find the sum of the digits of the factorial
 			BigInteger sumDigits = new BigInteger("0");
             while (result.compareTo(new BigInteger("0")) != 0) {
-                sumDigits = sumDigits.add(result.divide(new BigInteger("10")));
+                sumDigits = sumDigits.add(result.mod(new BigInteger("10")));
                 result = result.divide(new BigInteger("10"));
             }
 			resultList.add(sumDigits);
