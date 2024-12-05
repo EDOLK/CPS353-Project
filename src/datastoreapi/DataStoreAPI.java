@@ -107,7 +107,7 @@ public class DataStoreAPI {
         }
         public List<BigInteger> getBigIntegerList(){
             return list;
-        };
+        }
     }
 
     public class IntegerListWrapper implements ListWrapper{
@@ -117,7 +117,7 @@ public class DataStoreAPI {
         }
         public List<Integer> getIntegerList(){
             return list;
-        };
+        }
     }
 
 	public ListWrapper readInputMulti(InputRequest inputRequest) {
