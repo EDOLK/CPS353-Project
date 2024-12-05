@@ -114,7 +114,6 @@ public class ComputeEngineImplementation implements ComputeEngine {
 
     }
 
-    @Deprecated
     public String processResultString(UserRequest userRequest, List<Integer> resultList) {
         if(userRequest == null){
             throw new IllegalArgumentException("UserRequest cannot be null");

@@ -155,7 +155,6 @@ public class DataStoreAPI {
 	}
 
 	// output response method
-    @Deprecated
 	public List<String> writeOutput(OutputRequest outputRequest) {
 		if(outputRequest == null) {
 			throw new IllegalArgumentException("OutputRequest cannot be null");
