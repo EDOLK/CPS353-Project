@@ -4,8 +4,8 @@ public class UserRequest {
 	private NumStream requestStream;
 	private UserRequestSource userRequestSource;
 	private UserRequestDestination userRequestDestination;
-	private char resultDelimiter;
-	private char pairDelimiter;
+	private char resultDelimiter = ':';
+	private char pairDelimiter = ',';
 
 	public UserRequest(NumStream requestStream, UserRequestSource userRequestSource, UserRequestDestination userRequestDestination, char resultDelimiter,
 			char pairDelimiter) {

@@ -19,6 +19,17 @@ public class EngineResponseImplementation implements EngineResponse {
 		this.requestResult = new RequestResultImplementation(requestResult);
 	}
 
+	public EngineResponseImplementation(ResponseCode responseCode, RequestResult requestResult) {
+		if(responseCode == null) {
+			throw new IllegalArgumentException("ResponseCode cannot be null");
+		}
+		if(requestResult == null) {
+			throw new IllegalArgumentException("Result list cannot be null");
+		}
+		this.responseCode = responseCode;
+		this.requestResult = requestResult;
+	}
+
 	@Override
 	public void setRequestResult(RequestResult result) {
 		if(result == null) {

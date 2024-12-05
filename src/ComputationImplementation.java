@@ -1,6 +1,8 @@
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.BigIntegerNumStream;
 import interfaces.NumStream;
 
 public class ComputationImplementation implements ComputeEngineComputation {
@@ -9,11 +11,19 @@ public class ComputationImplementation implements ComputeEngineComputation {
 		if(numStream == null) {
 			throw new IllegalArgumentException("NumStream cannot be null");
 		}
-		ArrayList<Integer> resultList = new ArrayList<>();
+        if (numStream instanceof BigIntegerNumStream biNumStream){
+            ArrayList<BigInteger> resultList = new ArrayList<>();
+            factorialSumLoopForBigIntegers(biNumStream.getBigIntegers(), resultList);
+            NumStream resultStream = new BigIntegerNumStreamImplementation(resultList);
+            RequestResultImplementation requestResult = new RequestResultImplementation();
+            requestResult.setResultNumStream(resultStream);
+            return new EngineResponseImplementation(ResponseCode.SUCCESSFUL, requestResult);
+        } else {
+            ArrayList<Integer> resultList = new ArrayList<>();
+            factorialSumLoop(numStream.getIntegers(), resultList);
+            return new EngineResponseImplementation(ResponseCode.SUCCESSFUL, resultList);
+        }
 
-		factorialSumLoop(numStream.getIntegers(), resultList);
-
-		return new EngineResponseImplementation(ResponseCode.SUCCESSFUL, resultList);
 	}
 
 	public void factorialSumLoop(List<Integer> inputList, ArrayList<Integer> resultList) {
@@ -39,6 +49,33 @@ public class ComputationImplementation implements ComputeEngineComputation {
 				result = result / 10;
 			}
 			//add to result list
+			resultList.add(sumDigits);
+		}
+	}
+
+    public void factorialSumLoopForBigIntegers(List<BigInteger> inputList, ArrayList<BigInteger> resultList) {
+		if(inputList == null || inputList.isEmpty()) {
+			throw new IllegalArgumentException("Input list cannot be null or empty");
+		}
+		if(resultList == null) {
+			throw new IllegalArgumentException("Output list cannot be null");
+		}
+
+		//finds the factorial of the input
+		for (BigInteger inputNum : inputList) {
+			if(inputNum.compareTo(new BigInteger("0")) < 0) {
+				throw new IllegalArgumentException("Cannot compute the factorial of " + inputNum);
+			}
+			BigInteger result = new BigInteger("1");
+			for (BigInteger interval = inputNum; interval.compareTo(new BigInteger("0")) > 0; interval = interval.subtract(new BigInteger("1"))) {
+                result = result.multiply(interval);
+			}
+			//find the sum of the digits of the factorial
+			BigInteger sumDigits = new BigInteger("0");
+            while (result.compareTo(new BigInteger("0")) != 0) {
+                sumDigits = sumDigits.add(result.mod(new BigInteger("10")));
+                result = result.divide(new BigInteger("10"));
+            }
 			resultList.add(sumDigits);
 		}
 	}
