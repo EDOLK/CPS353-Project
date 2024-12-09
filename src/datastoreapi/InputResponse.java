@@ -2,7 +2,7 @@ package datastoreapi;
 
 import java.util.List;
 
-public interface InputResponse {
+public interface InputResponse extends ReadInputResponse{
 
 	List<Integer> readInput(InputRequest inputRequest);
 
