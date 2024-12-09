@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class DataStoreAPI {
+public class DataStoreAPI implements DataStorageSystem{
 
 	// list where the inputs will be stored
 	private List<Integer> inputList = new ArrayList<>();
@@ -170,6 +170,16 @@ public class DataStoreAPI {
 			e.printStackTrace();
 		}
 		return outputList;
+	}
+	
+	@Override
+	public ReadInputResponse readInput(ReadInputRequest readInputRequest) {
+		return null;
+	}
+
+	@Override
+	public WriteOutputResponse writeOutput(WriteOutputRequest writeOutputRequest) {
+		return null;
 	}
 }
 
