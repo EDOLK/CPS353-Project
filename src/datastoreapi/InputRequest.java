@@ -1,6 +1,6 @@
 package datastoreapi;
 
-public class InputRequest {
+public class InputRequest implements ReadInputResponse{
 	private String file;
 
 	public InputRequest(String file) {
