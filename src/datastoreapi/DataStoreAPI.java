@@ -1,12 +1,13 @@
 package datastoreapi;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class DataStoreAPI {
 
@@ -76,6 +77,7 @@ public class DataStoreAPI {
 	}
 
 	// input response method
+    @Deprecated
 	public List<Integer> readInput(InputRequest inputRequest) {
 		if(inputRequest == null) {
 			throw new IllegalArgumentException("InputRequest cannot be null");
@@ -92,6 +94,64 @@ public class DataStoreAPI {
 			e.printStackTrace();
 		}
 		return inputList;
+	}
+
+    public interface ListWrapper {
+        
+    }
+
+    public class BigIntegerListWrapper implements ListWrapper{
+        private List<BigInteger> list;
+        public BigIntegerListWrapper(List<BigInteger> list) {
+            this.list=list;
+        }
+        public List<BigInteger> getBigIntegerList(){
+            return list;
+        }
+    }
+
+    public class IntegerListWrapper implements ListWrapper{
+        private List<Integer> list;
+        public IntegerListWrapper(List<Integer> list) {
+            this.list=list;
+        }
+        public List<Integer> getIntegerList(){
+            return list;
+        }
+    }
+
+	public ListWrapper readInputMulti(InputRequest inputRequest) {
+		if(inputRequest == null) {
+			throw new IllegalArgumentException("InputRequest cannot be null");
+		}
+        List<Integer> tempList = new ArrayList<>();
+        boolean useBigIntegers = false;
+		try {
+			FileReader f = new FileReader(inputRequest.getFile()); 
+			Scanner in = new Scanner(f);
+			while (in.hasNextLine()) {
+				String[] inputs = in.nextLine().split(",");
+                for (String string : inputs) {
+                    int input = Integer.valueOf(string.strip());
+                    if (input > 12 && !useBigIntegers){
+                        useBigIntegers = true;
+                    }
+                    tempList.add(input);
+                }
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        if (useBigIntegers){
+            List<BigInteger> finalList = new ArrayList<BigInteger>();
+            for (Integer integer : tempList) {
+                finalList.add(new BigInteger(String.valueOf(integer)));
+            }
+            return new BigIntegerListWrapper(finalList);
+        } else {
+            return new IntegerListWrapper(tempList);
+        }
 	}
 
 	// output response method

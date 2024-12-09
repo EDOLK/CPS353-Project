@@ -37,7 +37,7 @@ public class CommandLineEntryPoint implements UserRequestProvider<String[]>{
 		}
 		if (response instanceof EngineResponseException engineResponseException) {
 			Exception e = engineResponseException.getException();
-			System.err.println("Error: encountered exception " + e + ", ignoring...");
+			e.printStackTrace();
 		}
 		if (response.getResponseCode().isFailure()){
 			System.out.println("Failed :^(");
