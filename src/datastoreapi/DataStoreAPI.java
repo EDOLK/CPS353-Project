@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import api.DataStorageSystem;
+import api.ReadInputRequest;
+import api.ReadInputResponse;
+import api.WriteOutputRequest;
+import api.WriteOutputResponse;
+
 public class DataStoreAPI implements DataStorageSystem{
 
 	// list where the inputs will be stored
