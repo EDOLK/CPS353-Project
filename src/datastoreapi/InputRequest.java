@@ -1,5 +1,7 @@
 package datastoreapi;
 
+import api.ReadInputResponse;
+
 public class InputRequest implements ReadInputResponse{
 	private String file;
 
