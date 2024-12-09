@@ -1,6 +1,8 @@
 package datastoreapi;
 
-public class OutputRequest {
+import api.WriteOutputResponse;
+
+public class OutputRequest implements WriteOutputResponse{
 	private String file;
 
 	public OutputRequest(String file) {
