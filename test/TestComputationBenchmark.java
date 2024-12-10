@@ -2,6 +2,7 @@ import datastoreapi.DataStoreAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,16 +12,16 @@ public class TestComputationBenchmark {
   @Test
   public void testComputationBenchmark() {
     // Create list of nums to calculate for
-    ArrayList<Integer> numList = new ArrayList<>();
+    ArrayList<BigInteger> numList = new ArrayList<>();
 
-    for (int i = 0; i < 1000000; i++) {
-      numList.add((int) (Math.random() * 12));
+    for (int i1 = 0; i1 < 1000000; i1++) {
+      numList.add(BigInteger.valueOf((long) (Math.random() * 100)));
     }
 
     DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
     DataStoreAPI dataStoreApi = new DataStoreAPI();
-    UserRequest userRequest = new UserRequest(new UserRequestSource(), new UserRequestDestination(), new NumStreamImplementation(numList));
+    UserRequest userRequest = new UserRequest(new UserRequestSource(), new UserRequestDestination(), new BigIntegerNumStreamImplementation(numList));
 
     ComputeRequestHandler computeRequestHandler = new ComputeRequestHandlerImplementation(userRequest);
     computeRequestHandler.setDataApi(dataStoreApi);
@@ -35,20 +36,21 @@ public class TestComputationBenchmark {
     userRequest.setRequestStream(computeRequestHandler.getUserRequest().getRequestStream());
 
     // Run using old computation system
-    long beforeTime = System.nanoTime();
+    long beforeTime = System.currentTimeMillis();
     computeEngineImplementationOld.submitRequest(userRequest);
-    long afterTime = System.nanoTime();
+    long afterTime = System.currentTimeMillis();
 
     long elapsedOld = afterTime - beforeTime;
-    System.out.println("Elapsed time old: " + elapsedOld + " nano seconds");
+    System.out.println("Elapsed time old: " + elapsedOld + " milliseconds");
 
     // Run using new computation system
-    beforeTime = System.nanoTime();
+    beforeTime = System.currentTimeMillis();
     computeEngineImplementationNew.submitRequest(userRequest);
-    afterTime = System.nanoTime();
+
+    afterTime = System.currentTimeMillis();
 
     long elapsedNew = afterTime - beforeTime;
-    System.out.println("Elapsed time new: " + elapsedNew + " nano seconds");
+    System.out.println("Elapsed time new: " + elapsedNew + " milliseconds");
 
     double percentDifferance;
     String elapsedDifference;
@@ -64,6 +66,6 @@ public class TestComputationBenchmark {
     percentDifferance *= 100;
     System.out.println("New computation is " + decimalFormat.format(percentDifferance) + "% " + elapsedDifference + " than old computation");
 
-    Assertions.assertTrue((elapsedNew < elapsedOld) && percentDifferance >= 0.1);
+    Assertions.assertTrue((elapsedNew < elapsedOld) && percentDifferance >= 10);
   }
 }
