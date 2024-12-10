@@ -10,18 +10,24 @@ public class TestComputationBenchmark {
 
   @Test
   public void testComputationBenchmark() {
+    // Create list of nums to calculate for
+    ArrayList<Integer> numList = new ArrayList<>();
+
+    for (int i = 0; i < 1000000; i++) {
+      numList.add((int) (Math.random() * 12));
+    }
+
     DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
-    ArrayList<Integer> requestList = new ArrayList<>(Arrays.asList(1,10,25));
-
     DataStoreAPI dataStoreApi = new DataStoreAPI();
-    UserRequest userRequest = new UserRequest(new UserRequestSource(), new UserRequestDestination(), new NumStreamImplementation(requestList));
+    UserRequest userRequest = new UserRequest(new UserRequestSource(), new UserRequestDestination(), new NumStreamImplementation(numList));
 
     ComputeRequestHandler computeRequestHandler = new ComputeRequestHandlerImplementation(userRequest);
     computeRequestHandler.setDataApi(dataStoreApi);
 
-    ConcurrentComputationImplementation computationImplementationOld = new ConcurrentComputationImplementation();
-    ComputationImplementation computationImplementationNew = new ComputationImplementation();
+    // Computation implementations
+    ComputationImplementation computationImplementationOld = new ComputationImplementation();
+    ConcurrentComputationImplementation computationImplementationNew = new ConcurrentComputationImplementation();
 
     ComputeEngine computeEngineImplementationOld = new ComputeEngineImplementation(computationImplementationOld, computeRequestHandler);
     ComputeEngine computeEngineImplementationNew = new ComputeEngineImplementation(computationImplementationNew, computeRequestHandler);
@@ -55,6 +61,7 @@ public class TestComputationBenchmark {
       elapsedDifference = "faster";
     }
 
+    percentDifferance *= 100;
     System.out.println("New computation is " + decimalFormat.format(percentDifferance) + "% " + elapsedDifference + " than old computation");
 
     Assertions.assertTrue((elapsedNew < elapsedOld) && percentDifferance >= 0.1);
