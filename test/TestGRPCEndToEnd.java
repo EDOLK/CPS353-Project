@@ -43,13 +43,20 @@ public class TestGRPCEndToEnd {
         assert outputFile.exists();
         outputFile.deleteOnExit();
         int[] correctResults = {3,9,27,37};
+        int[] outputResults = new int[4];
         BufferedReader outputFileReader = new BufferedReader(new FileReader(outputFile));
         int index = 0;
         String line;
         while ((line = outputFileReader.readLine()) != null){
-            assert Integer.valueOf(line).equals(correctResults[index]);
+            int value = Integer.valueOf(line);
+            outputResults[index] = value;
             index++;
         }
+        assert outputResults.length == correctResults.length;
+        assert outputResults[0] == correctResults[0];
+        assert outputResults[1] == correctResults[1];
+        assert outputResults[2] == correctResults[2];
+        assert outputResults[3] == correctResults[3];
         outputFileReader.close();
 
     }
