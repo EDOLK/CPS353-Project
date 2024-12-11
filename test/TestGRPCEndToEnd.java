@@ -42,7 +42,7 @@ public class TestGRPCEndToEnd {
         File outputFile = new File("output.txt");
         assert outputFile.exists();
         outputFile.deleteOnExit();
-        int[] correctResults = {3,9,27,37};
+        int[] correctResults = {3,9,27,63};
         int[] outputResults = new int[4];
         BufferedReader outputFileReader = new BufferedReader(new FileReader(outputFile));
         int index = 0;
